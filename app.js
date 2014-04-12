@@ -4,7 +4,7 @@ var restify = require('restify'),
     server = restify.createServer({ name: 'thinkbatman' }),
     port = process.env.PORT || 7777,
     routes;
-console.log(process.env.PORT);
+
 routes = [
     {
         path:/^\/(?:bat-|)thought(?:\/(.*)|)$/,
@@ -24,9 +24,15 @@ function startServer(){
         .use(restify.fullResponse())
         .use(restify.bodyParser());
 
+
     routes.forEach(function(route){
         server[route.method](route.path, route.action);
     });
+
+    server.get(/.*/, restify.serveStatic({
+        'directory': './public',
+        'default': 'index.html'
+    }));
 
     server.listen(port, function(){
         console.log('%s listening at %s', server.name, server.url);
