@@ -12,8 +12,8 @@ function WrappedResponse(docs){
 }
 
 handler.thought.get = function(req, res){
+    console.log('get to ' + req.url);
     var q, method;
-    console.log(req.url);
     method = (req.params.random) ? 'random' : 'find';
     q  = req.params[0] ? { id:  req.params[0] } : {};
     db[method](q).then(
@@ -24,9 +24,15 @@ handler.thought.get = function(req, res){
     );
 };
 
-handler.thought.put = function(req,res){
-    // db.putAThought(res.);
-    res.send(404);
+handler.thought.post = function(req,res){
+    console.log(req.params);
+    console.log('post to ' + req.url);
+    db.putAThought(req.params.docs[0]).then(
+        function(savedThought){
+            console.log(savedThought);
+            res.send(200, new WrappedResponse([savedThought]));
+        }
+    );
 };
 
 module.exports = handler;

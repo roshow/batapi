@@ -45,17 +45,18 @@ db.random = function(){
             var randy = Math.floor(Math.random()*count);
             batThoughtModel.find({}).limit(1).skip(randy).exec(function(err, docs){
                 def.resolve(docs);
-            })
+            });
         }
     });
     return def;
-}
+};
 
 db.putAThought = function(model){
     var def = new promised.Deferred(),
         _id = model._id;
     delete model._id;
     batThoughtModel.findOneAndUpdate({ _id: _id }, model, { upsert : true }, function(err, numChanges){
+        // console.log(arguments);
         if (err) { def.reject(err); }
         else { def.resolve(numChanges); }
     });

@@ -12,17 +12,23 @@ routes = [
         method: 'get'
     },
     {
-        path:/^\/(?:bat-|)thought(?:\/|)$/,
-        action: handler.thought.get,
-        method: 'put'
+        path:'/thought',
+        action: handler.thought.post,
+        method: 'post'
+    },
+    {
+        path:'/thought/:id',
+        action: handler.thought.post,
+        method: 'post'
     }
 ];
     
 function startServer(){
     server
         .use(restify.queryParser())
-        .use(restify.fullResponse())
-        .use(restify.bodyParser());
+        .use(restify.bodyParser())
+        .use(restify.CORS( {origins: ['*']}))
+        .use(restify.fullResponse());
 
 
     routes.forEach(function(route){
@@ -30,7 +36,7 @@ function startServer(){
     });
 
     server.get(/.*/, restify.serveStatic({
-        'directory': './public',
+        'directory': './app',
         'default': 'index.html'
     }));
 
