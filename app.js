@@ -7,17 +7,12 @@ var restify = require('restify'),
 
 routes = [
     {
-        path:/^\/(?:bat-|)thought(?:\/(.*)|)$/,
+        paths: ['/thought', '/thought/:id'],
         action: handler.thought.get,
         method: 'get'
     },
     {
-        path:'/thought',
-        action: handler.thought.post,
-        method: 'post'
-    },
-    {
-        path:'/thought/:id',
+        paths: ['/thought', '/thought/:id'],
         action: handler.thought.post,
         method: 'post'
     }
@@ -32,7 +27,14 @@ function startServer(){
 
 
     routes.forEach(function(route){
-        server[route.method](route.path, route.action);
+        if (route.paths){
+            route.paths.forEach(function(path){
+                server[route.method](path, route.action);
+            });
+        }
+        else {
+            server[route.method](route.path, route.action);
+        }
     });
 
     server.get(/.*/, restify.serveStatic({
