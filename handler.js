@@ -3,7 +3,16 @@ var db = require('./db'),
     handler = {
         connectDb: db.connect,
         thought: {}
-    };
+    },
+    ftp = require('ftp'),
+    batFtp = new ftp();
+
+batFtp.connect({
+    host: 'roshow.net',
+    user: process.env.FTPUSER,
+    password: process.env.FTPPW
+});
+
 
 function WrappedResponse(docs){
     this.code = 200;
@@ -44,10 +53,17 @@ handler.thought.uploadImg = function(req, res){
     var fs = require('fs'),
         filename = Object.keys(req.files)[0];
     fs.readFile(req.files[filename].path, function (err, data) {
-        // var newPath = __dirname + "/uploads/uploadedFileName";
-        fs.writeFile('/Users/roshow/github/BatAPI/'+filename, data, function () {
-            console.log(arguments);
+        batFtp.put(data, 'public/images/thinkbatman/' + filename, function(err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(data);
+            res.send(200, new WrappedResponse([filename]));
         });
+        // var newPath = __dirname + "/uploads/uploadedFileName";
+        // fs.writeFile('/Users/roshow/github/BatAPI/'+filename, data, function () {
+        //     console.log(arguments);
+        // });
     });
 };
 

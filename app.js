@@ -5,24 +5,6 @@ var restify = require('restify'),
     port = process.env.PORT || 7777,
     routes;
 
-// var Client = require('ftp');
-
-// var c = new Client();
-// c.on('ready', function (){
-//     c.list('public/images/thinkbatman', function (err, list){
-//         if (err) throw err;
-//         console.dir(list);
-//         c.end();
-//     });
-// });
-
-// c.connect({
-//     host: 'roshow.net',
-//     user: 'roshow@roshow.net',
-//     password: 'Websh1t@'
-// });
-
-
 routes = [
     {
         paths: ['/thought', '/thought/:id'],
