@@ -30,7 +30,6 @@ handler.thought.get = function(req, res){
 
 handler.thought.post = function(req,res){
     console.log('post to ' + req.url);
-    console.log(req.params);
     var thought = req.params.docs ? req.params.docs[0] : req.params;
     db.putAThought(thought).then(
         function(savedThought){

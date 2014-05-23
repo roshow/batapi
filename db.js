@@ -66,9 +66,8 @@ db.putAThought = function(model){
         });
     }
     else {
-        console.log(model);
         batThoughtModel.create(model, function(err, savedModel){
-            console.log(savedModel);
+            def.resolve(savedModel);
         });
     }
     return def;
