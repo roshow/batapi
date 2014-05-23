@@ -52,14 +52,25 @@ db.random = function(){
 };
 
 db.putAThought = function(model){
-    var def = new promised.Deferred(),
-        _id = model._id;
-    delete model._id;
-    batThoughtModel.findOneAndUpdate({ _id: _id }, model, { upsert : true }, function(err, numChanges){
-        // console.log(arguments);
-        if (err) { def.reject(err); }
-        else { def.resolve(numChanges); }
-    });
+    var def = new promised.Deferred();
+    if (model._id){
+        var _id = model._id;
+        delete model._id;
+        batThoughtModel.findOneAndUpdate({ _id: _id }, model, { upsert : true }, function(err, updatedModel){
+            if (err) {
+                def.reject(err);
+            }
+            else {
+                def.resolve(updatedModel);
+            }
+        });
+    }
+    else {
+        console.log(model);
+        batThoughtModel.create(model, function(err, savedModel){
+            console.log(savedModel);
+        });
+    }
     return def;
 };
 
