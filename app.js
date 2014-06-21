@@ -30,7 +30,7 @@ function startServer(){
     });
 
     server.get(/.*/, restify.serveStatic({
-        'directory': './public',
+        'directory': './dist',
         'default': 'index.html'
     }));
 
