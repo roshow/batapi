@@ -42,7 +42,7 @@ function startServer(){
     });
 
     server.get(/.*/, restify.serveStatic({
-        'directory': './app',
+        'directory': './dist',
         'default': 'index.html'
     }));
 
