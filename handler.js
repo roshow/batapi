@@ -57,7 +57,7 @@ handler.thought.uploadImg = function(req, res){
             if (err) {
                 console.log(err);
             }
-            console.log(data);
+            // console.log(data);
             res.send(200, new WrappedResponse([filename]));
         });
         // var newPath = __dirname + "/uploads/uploadedFileName";
