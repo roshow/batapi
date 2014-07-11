@@ -2,31 +2,43 @@
 var restify = require('restify'),
     handler = require('./handler'),
     server = restify.createServer({ name: 'thinkbatman' }),
-    port = process.env.PORT || 7777,
+    port = process.env.PORT || 5000,
     routes;
 
 routes = [
     {
-        path:/^\/(?:bat-|)thought(?:\/(.*)|)$/,
+        paths: ['/thought', '/thought/:id'],
         action: handler.thought.get,
         method: 'get'
     },
     {
-        path:/^\/(?:bat-|)thought(?:\/|)$/,
-        action: handler.thought.get,
-        method: 'put'
+        paths: ['/thought', '/thought/:id'],
+        action: handler.thought.post,
+        method: 'post'
+    },
+    {
+        path: '/uploadImg',
+        action: handler.thought.uploadImg,
+        method: 'post'
     }
 ];
     
 function startServer(){
     server
         .use(restify.queryParser())
-        .use(restify.fullResponse())
-        .use(restify.bodyParser());
+        .use(restify.bodyParser())
+        .use(restify.fullResponse());
 
 
     routes.forEach(function(route){
-        server[route.method](route.path, route.action);
+        if (route.paths){
+            route.paths.forEach(function(path){
+                server[route.method](path, route.action);
+            });
+        }
+        else {
+            server[route.method](route.path, route.action);
+        }
     });
 
     server.get(/.*/, restify.serveStatic({

@@ -1,9 +1,11 @@
 {
   "name": "BatAPI",
   "version": "0.0.1",
+  "description": "www.thinkingaboutbatman.com api",
   "dependencies": {
     "restify": "*",
     "mongoose": "*",
-    "promised-io": "*"
+    "promised-io": "*",
+    "ftp": "*"
   }
 }
