@@ -1,4 +1,6 @@
+/*globals require, process, console */
 'use strict';
+
 var db = require('./db'),
     handler = {
         connectDb: db.connect,
@@ -19,6 +21,12 @@ function WrappedResponse(docs){
     this.count = docs.length;
     this.docs = docs;
 }
+
+handler.test = function(req, res, next){
+    console.log('see you');
+    console.log(next);
+    // return next();
+};
 
 handler.thought.get = function(req, res){
     console.log('get to ' + req.url);

@@ -1,4 +1,6 @@
+/*globals require, console, process */
 'use strict';
+
 var restify = require('restify'),
     handler = require('./handler'),
     server = restify.createServer({ name: 'thinkbatman' }),
@@ -7,12 +9,12 @@ var restify = require('restify'),
 
 routes = [
     {
-        paths: ['/thought', '/thought/:id'],
+        path: ['/thought', '/thought/:id'],
         action: handler.thought.get,
         method: 'get'
     },
     {
-        paths: ['/thought', '/thought/:id'],
+        path: ['/thought', '/thought/:id'],
         action: handler.thought.post,
         method: 'post'
     },
@@ -31,13 +33,16 @@ function startServer(){
 
 
     routes.forEach(function(route){
-        if (route.paths){
-            route.paths.forEach(function(path){
-                server[route.method](path, route.action);
+        if (!Array.isArray(route.action)){
+            route.action = [route.action];
+        }
+        if (Array.isArray(route.path)){
+            route.path.forEach(function(path){
+                server[route.method].apply(server, [path].concat(route.action));
             });
         }
         else {
-            server[route.method](route.path, route.action);
+            server[route.method].apply(server, [route.path].concat(route.action));
         }
     });
 
