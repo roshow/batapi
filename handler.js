@@ -2,11 +2,11 @@
 'use strict';
 
 var db = require('./db'),
+    ftp = require('ftp'),
     handler = {
         connectDb: db.connect,
         thought: {}
     },
-    ftp = require('ftp'),
     batFtp = new ftp();
 
 batFtp.connect({
