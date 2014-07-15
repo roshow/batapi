@@ -12,6 +12,16 @@ routes = [
         path: ['/thought', '/thought/:id'],
         action: handler.thought.get,
         method: 'get'
+    },
+    {
+        path: ['/thought', '/thought/:id'],
+        action: handler.thought.post,
+        method: 'post'
+    },
+    {
+        path: '/uploadImg',
+        action: handler.thought.uploadImg,
+        method: 'post'
     }
 ];
     
