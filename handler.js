@@ -23,7 +23,7 @@ function WrappedResponse(docs){
 }
 
 handler.thought.get = function(req, res, next){
-    console.log('get to ' + req.url);
+    // console.log('get to ' + req.url);
     var q = {},
         method;
     method = (req.params.random) ? 'random' : 'find';
@@ -31,7 +31,6 @@ handler.thought.get = function(req, res, next){
         var key = req.params.id.length > 5 ? '_id' : 'id';
         q[key]= req.params.id;
     }
-    console.log(q);
     db[method](q).then(
         function(docs){
             res.send(200, new WrappedResponse(docs));
@@ -42,7 +41,7 @@ handler.thought.get = function(req, res, next){
 };
 
 handler.thought.post = function(req,res, next){
-    console.log('post to ' + req.url);
+    // console.log('post to ' + req.url);
     var thought = req.params.docs ? req.params.docs[0] : req.params;
     db.putAThought(thought).then(
         function(savedThought){
@@ -53,7 +52,7 @@ handler.thought.post = function(req,res, next){
 };
 
 handler.thought.uploadImg = function(req, res, next){
-    console.log('uploadImg to ' + req.url);
+    // console.log('uploadImg to ' + req.url);
 
     var fs = require('fs'),
         filename = Object.keys(req.files)[0];
