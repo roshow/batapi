@@ -5,6 +5,7 @@ var restify = require('restify'),
     handler = require('./handler'),
     server = restify.createServer({ name: 'thinkbatman' }),
     port = process.env.PORT || 5000,
+    staticFolder = process.env.STATIC || 'app',
     routes;
 
 routes = [
@@ -47,7 +48,7 @@ function startServer(rts){
     });
 
     server.get(/.*/, restify.serveStatic({
-        'directory': './app',
+        'directory': './' + staticFolder,
         'default': 'index.html'
     }));
 
