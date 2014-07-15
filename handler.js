@@ -9,11 +9,11 @@ var db = require('./db'),
     ftp = require('ftp'),
     batFtp = new ftp();
 
-batFtp.connect({
-    host: 'roshow.net',
-    user: process.env.FTPUSER,
-    password: process.env.FTPPW
-});
+// batFtp.connect({
+//     host: 'roshow.net',
+//     user: process.env.FTPUSER,
+//     password: process.env.FTPPW
+// });
 
 
 function WrappedResponse(docs){
