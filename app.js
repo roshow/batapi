@@ -1,48 +1,44 @@
+/*globals require, console, process */
 'use strict';
+
 var restify = require('restify'),
     handler = require('./handler'),
     server = restify.createServer({ name: 'thinkbatman' }),
     port = process.env.PORT || 5000,
+    staticFolder = process.env.STATIC || 'app',
     routes;
 
 routes = [
     {
-        paths: ['/thought', '/thought/:id'],
+        path: ['/thought', '/thought/:id'],
         action: handler.thought.get,
         method: 'get'
-    },
-    {
-        paths: ['/thought', '/thought/:id'],
-        action: handler.thought.post,
-        method: 'post'
-    },
-    {
-        path: '/uploadImg',
-        action: handler.thought.uploadImg,
-        method: 'post'
     }
 ];
     
-function startServer(){
+function startServer(rts){
     server
         .use(restify.queryParser())
         .use(restify.bodyParser())
         .use(restify.fullResponse());
 
 
-    routes.forEach(function(route){
-        if (route.paths){
-            route.paths.forEach(function(path){
-                server[route.method](path, route.action);
+    rts.forEach(function(route){
+        if (!Array.isArray(route.action)){
+            route.action = [route.action];
+        }
+        if (Array.isArray(route.path)){
+            route.path.forEach(function(path){
+                server[route.method].apply(server, [path].concat(route.action));
             });
         }
         else {
-            server[route.method](route.path, route.action);
+            server[route.method].apply(server, [route.path].concat(route.action));
         }
     });
 
     server.get(/.*/, restify.serveStatic({
-        'directory': './dist',
+        'directory': './' + staticFolder,
         'default': 'index.html'
     }));
 
@@ -52,6 +48,8 @@ function startServer(){
     // return server;
 }
 
-handler.connectDb().then(startServer);
+handler.connectDb().then(function (){
+    startServer(routes);
+});
 // module.exports = handler.connectDb().then(startServer);
 
