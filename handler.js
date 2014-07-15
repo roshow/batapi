@@ -31,6 +31,7 @@ handler.thought.get = function(req, res, next){
         var key = req.params.id.length > 5 ? '_id' : 'id';
         q[key]= req.params.id;
     }
+    console.log(q);
     db[method](q).then(
         function(docs){
             res.send(200, new WrappedResponse(docs));
