@@ -12,27 +12,17 @@ routes = [
         path: ['/thought', '/thought/:id'],
         action: handler.thought.get,
         method: 'get'
-    },
-    {
-        path: ['/thought', '/thought/:id'],
-        action: handler.thought.post,
-        method: 'post'
-    },
-    {
-        path: '/uploadImg',
-        action: handler.thought.uploadImg,
-        method: 'post'
     }
 ];
     
-function startServer(){
+function startServer(rts){
     server
         .use(restify.queryParser())
         .use(restify.bodyParser())
         .use(restify.fullResponse());
 
 
-    routes.forEach(function(route){
+    rts.forEach(function(route){
         if (!Array.isArray(route.action)){
             route.action = [route.action];
         }
@@ -57,6 +47,8 @@ function startServer(){
     // return server;
 }
 
-handler.connectDb().then(startServer);
+handler.connectDb().then(function (){
+    startServer(routes);
+});
 // module.exports = handler.connectDb().then(startServer);
 
