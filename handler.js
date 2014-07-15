@@ -9,11 +9,11 @@ var db = require('./db'),
     ftp = require('ftp'),
     batFtp = new ftp();
 
-batFtp.connect({
-    host: 'roshow.net',
-    user: process.env.FTPUSER,
-    password: process.env.FTPPW
-});
+// batFtp.connect({
+//     host: 'roshow.net',
+//     user: process.env.FTPUSER,
+//     password: process.env.FTPPW
+// });
 
 
 function WrappedResponse(docs){
@@ -31,6 +31,7 @@ handler.thought.get = function(req, res, next){
         var key = req.params.id.length > 5 ? '_id' : 'id';
         q[key]= req.params.id;
     }
+    console.log(q);
     db[method](q).then(
         function(docs){
             res.send(200, new WrappedResponse(docs));
